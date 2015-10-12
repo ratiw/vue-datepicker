@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>vue-datepicker</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css" rel="stylesheet">
+        <link href="./datepicker.css" rel="stylesheet">
+        <style type="text/css">
+        </style>
+    </head>
+    <body id="datepickerTest" style="padding:100px">
+        <vue-datepicker
+            :value="sDate"
+            lang="th"
+        >
+        </vue-datepicker>
+        <vue-datepicker
+            v-bind:value="sDate2"
+            prompt="Select a date"
+        >
+        </vue-datepicker>
+
+    </body>
+</html>
+<script src="../../lib/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
+<script src="../../lib/vue.js"></script>
+<script src="./datepicker.js"></script>
+
+<script>
+
+Vue.config.debug = true;
+
+var datepickerConf = {}
+var x = new Vue({
+    el : '#datepickerTest',
+    data : {
+        sDate : '12/09/2557',
+        sDate2 : ''
+    }
+})
+</script>
