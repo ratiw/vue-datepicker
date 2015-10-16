@@ -3,7 +3,7 @@
 */
 
 Vue.component('vue-datepicker', {
-    props: ['prompt', 'dateLabel', 'dateFormat', 'value', 'lang', 'placeholder'],
+    props: ['lang', 'prompt', 'dateLabel', 'dateFormat', 'value', 'placeholder'],
 
     template :
         '<div class="vue-datepicker">' +
@@ -65,23 +65,20 @@ Vue.component('vue-datepicker', {
                 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
             ],
             shortMonthTH : [
-                'ม.ค.', 'ก.พ.', 'มี.ค.',
-                'เม.ย.', 'พ.ค.', 'มิ.ย.',
-                'ก.ค.', 'ส.ค.', 'ก.ย.',
-                'ต.ค.', 'พ.ย.', 'ธ.ค.'
+                'มกรา', 'กุมภา', 'มีนา',
+                'เมษา', 'พฤษภา', 'มิถุนา',
+                'กรกฎา', 'สิงหา', 'กันยา',
+                'ตุลา', 'พฤศจิกา', 'ธันวา'
             ]
         }
     },
     ready : function() {
-        this.parseInputDate()
+        // this.parseInputDate()
     },
     watch : {
         currDate : function (){
             this.getDateRange()
         },
-    },
-    events : {
-
     },
     methods : {
         inputClick : function (e){
@@ -98,6 +95,9 @@ Vue.component('vue-datepicker', {
             if (valueDate){
                 this.currDate = valueDate
             }
+        },
+        getCurrentDate: function() {
+            return this.currDate;
         },
         displayDateLabel: function(date) {
             return this.stringify(date, this.getDateLabelPattern())
@@ -125,6 +125,7 @@ Vue.component('vue-datepicker', {
             this.currDate = date
             this.value = this.stringify(this.currDate, this.dateFormat)
             this.popupDisplay = 'none'
+            this.$dispatch('datepicker:selected', this.stringify(this.currDate, '{yyyy}-{mm}-{dd}'));
         },
         getYearMonth : function (year, month){
             if (month > 11){
@@ -276,6 +277,7 @@ Vue.component('vue-datepicker', {
     },
     compiled : function (){
         var me = this
+        me.lang = me.lang ? me.lang : 'en'
         me.getDateRange()
 
         $(window).on('click', function (e){
