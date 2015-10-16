@@ -3,29 +3,29 @@
 */
 
 Vue.component('vue-datepicker', {
-    props: ['prompt', 'dateLabel', 'dateFormat', 'value', 'lang'],
+    props: ['prompt', 'dateLabel', 'dateFormat', 'value', 'lang', 'placeholder'],
 
     template :
         '<div class="vue-datepicker">' +
             '<div class="ui input">' +
-                '<input class="vue-datepicker-input" type="text" v-on="click:inputClick" v-model="value"/>' +
+                '<input class="vue-datepicker-input" type="text" v-on:click="inputClick" v-model="value" :placeholder="placeholder"/>' +
             '</div>' +
-            '<div class="vue-datepicker-popup" v-style="display:popupDisplay">' +
+            '<div class="vue-datepicker-popup" :style="{display:popupDisplay}">' +
                 '<div class="vue-datepicker-inner">' +
                     '<div v-show="prompt" class="vue-datepicker-head">' +
                         '<div class="vue-datepicker-label">{{prompt}}</div>' +
                     '</div>' +
                     '<div class="vue-datepicker-body">' +
                         '<div class="vue-datepicker-ctrl">' +
-                            '<i class="vue-month-btn vue-datepicker-preMonthBtn large angle left icon" v-on="click:preNextMonthClick(0)"></i>' +
-                            '<i class="vue-month-btn vue-datepicker-nextMonthBtn large angle right icon" v-on="click:preNextMonthClick(1)"></i>' +
+                            '<i class="vue-month-btn vue-datepicker-preMonthBtn large angle left icon" v-on:click="preNextMonthClick(0)"></i>' +
+                            '<i class="vue-month-btn vue-datepicker-nextMonthBtn large angle right icon" v-on:click="preNextMonthClick(1)"></i>' +
                             '<p>{{displayDateLabel(currDate)}}</p>' +
                         '</div>' +
                         '<div class="vue-datepicker-weekRange">' +
-                            '<span v-repeat="w:getWeekRange()">{{w}}</span>' +
+                            '<span v-for="w in getWeekRange()" track-by="$index">{{w}}</span>' +
                         '</div>' +
                         '<div class="vue-datepicker-dateRange">' +
-                            '<span v-repeat="d:dateRange" v-class="d.sclass" v-on="click:itemClick(d.date)">{{d.text}}</span>' +
+                            '<span v-for="d in dateRange" :class="d.sclass" v-on:click="itemClick(d.date)">{{d.text}}</span>' +
                         '</div>' +
                     '</div>' +
                 '</div>' +
@@ -36,11 +36,11 @@ Vue.component('vue-datepicker', {
         var today = new Date
         return {
             config : {},
-            lang : 'en',
-            value : '',
-            prompt : '',
-            dateLabel : '',
-            dateFormat : '{yyyy}-{mm}-{dd}',
+            // lang : 'en',
+            // value : '',
+            // prompt : '',
+            // dateLabel : '',
+            // dateFormat : '{yyyy}-{mm}-{dd}',
             weekRange : ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
             weekRangeTH : ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
             dateRange : [], // we need to draw a date range
@@ -80,12 +80,18 @@ Vue.component('vue-datepicker', {
             this.getDateRange()
         },
     },
+    events : {
+
+    },
     methods : {
         inputClick : function (e){
             this.popupDisplay = this.popupDisplay=='none' ? 'block' : 'none'
             if (this.popupDisplay == 'block') {
                 this.parseInputDate()
             }
+        },
+        hidePicker: function() {
+            this.popupDisplay = 'none'
         },
         parseInputDate: function() {
             var valueDate = this.parse(this.value)
@@ -272,8 +278,20 @@ Vue.component('vue-datepicker', {
         var me = this
         me.getDateRange()
 
-        // VueUI.winClick(me.$el, function (){
-        //     me.popupDisplay = 'none'
-        // })
-    }
+        $(window).on('click', function (e){
+            var dom = e.target
+
+            while (dom){
+                if (dom == me.$el){
+                    return
+                }
+                dom = dom.parentElement
+                if (dom == document.body){
+                    break
+                }
+            }
+
+            me.popupDisplay = 'none'
+        })
+  }
 })

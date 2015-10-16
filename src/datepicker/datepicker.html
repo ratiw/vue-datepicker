@@ -17,6 +17,7 @@
         <vue-datepicker
             v-bind:value="sDate2"
             prompt="Select a date"
+            placeholder="yyyy-mm-dd"
         >
         </vue-datepicker>
 
@@ -32,7 +33,7 @@
 Vue.config.debug = true;
 
 var datepickerConf = {}
-var x = new Vue({
+var vm = new Vue({
     el : '#datepickerTest',
     data : {
         sDate : '12/09/2557',

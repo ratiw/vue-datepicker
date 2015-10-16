@@ -3,12 +3,12 @@
 */
 
 Vue.component('vue-datepicker', {
-    props: ['prompt', 'dateLabel', 'dateFormat', 'value', 'lang'],
+    props: ['prompt', 'dateLabel', 'dateFormat', 'value', 'lang', 'placeholder'],
 
     template :
         '<div class="vue-datepicker">' +
             '<div class="ui input">' +
-                '<input class="vue-datepicker-input" type="text" v-on:click="inputClick" v-model="value"/>' +
+                '<input class="vue-datepicker-input" type="text" v-on:click="inputClick" v-model="value" :placeholder="placeholder"/>' +
             '</div>' +
             '<div class="vue-datepicker-popup" :style="{display:popupDisplay}">' +
                 '<div class="vue-datepicker-inner">' +
